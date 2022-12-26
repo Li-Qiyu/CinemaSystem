@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="application/entity/Screening">
+
+    <insert id="addScreening" parameterType="application.entity.persistent.PersistentScreening">
+        insert into screening
+            set date = #{date},
+                time = #{time},
+                ticket_sold = #{ticketSold},
+                screen_id = #{screenId}
+    </insert>
+
+    <delete id="deleteScreening" parameterType="java.lang.Integer">
+        delete from screening where screening_id = #{screeningIdParam}
+    </delete>
+
+    <update id="updateScreening" parameterType="application.entity.persistent.PersistentScreening">
+        update screening
+        <set>
+            <if test="date != null and date != ''">
+                date = #{date},
+            </if>
+            <if test="time != null and time != ''">
+                time = #{time},
+            </if>
+            <if test="ticketSold != null and ticketSold != ''">
+                ticket_sold = #{ticketSold},
+            </if>
+            <if test="screenId != null and screenId != ''">
+                screen_id = #{screenId},
+            </if>
+        </set>
+        where screening_id = #{screeningId}
+    </update>
+
+    <select id="getScreenings" parameterType="java.util.Map" resultType="application.entity.persistent.PersistentScreening">
+        select screening_id as screeningId,
+               date as date,
+               time as time,
+               ticket_sold as ticketSold,
+               screen_id as screenId
+        from screening
+        <where>
+            <if test="date != null and date != ''">
+                date = #{date}
+            </if>
+            <if test="time != null and time != ''">
+                and time = #{time}
+            </if>
+            <if test="ticketSold != null and ticketSold != ''">
+                and ticket_sold = #{ticketSold}
+            </if>
+            <if test="screenId != null and screenId != ''">
+                and screen_id = #{screenId}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="getAllScreenings" resultType="application.entity.persistent.PersistentScreening">
+        select * from screening
+    </select>
+
+</mapper>

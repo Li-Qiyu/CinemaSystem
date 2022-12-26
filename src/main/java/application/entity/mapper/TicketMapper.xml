@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="application/entity/Ticket">
+
+    <insert id="addTicket" parameterType="application.entity.persistent.PersistentTicket">
+        insert into ticket
+            set date = #{date},
+                time = #{time},
+                movie_title = #{movieTitle},
+                screen_id = #{screenId},
+                seat_id = #{seatId},
+                price = #{price},
+                status = #{status}
+    </insert>
+
+    <delete id="deleteTicket" parameterType="java.lang.Integer">
+        delete from ticket where ticket_id = #{ticketIdParam}
+    </delete>
+
+    <update id="updateTicket" parameterType="application.entity.persistent.PersistentTicket">
+        update ticket
+        <set>
+            <if test="ticketId != null and ticketId != ''">
+                ticket_id = #{ticketId},
+            </if>
+            <if test="date != null and date != ''">
+                date = #{date},
+            </if>
+            <if test="time != null and time != ''">
+                time = #{time},
+            </if>
+            <if test="movieTitle != null and movieTitle != ''">
+                movie_title = #{movieTitle},
+            </if>
+            <if test="screenId != null and screenId != ''">
+                screen_id = #{screenId},
+            </if>
+            <if test="seatId != null and seatId != ''">
+                seat_id = #{seatId},
+            </if>
+            <if test="price != null and price != ''">
+                price = #{price},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+        </set>
+        where ticket_id = #{ticketId}
+    </update>
+
+    <select id="getTickets" parameterType="java.util.Map" resultType="application.entity.persistent.PersistentTicket">
+        select ticket_id as ticketId,
+               date as date,
+               time as time,
+               movie_title as movieTitle,
+               screen_id as screenId,
+               seat_id as seatId,
+               price as price,
+               status as status
+        from ticket
+        <where>
+            <if test="ticketId != null and ticketId != ''">
+                ticket_id = #{ticketId}
+            </if>
+            <if test="date != null and date != ''">
+                and date = #{date}
+            </if>
+            <if test="time != null and time != ''">
+                and time = #{time}
+            </if>
+            <if test="movieTitle != null and movieTitle != ''">
+                and movie_title = #{movieTitle}
+            </if>
+            <if test="screenId != null and screenId != ''">
+                and screen_id = #{screenId}
+            </if>
+            <if test="seatId != null and seatId != ''">
+                and seat_id = #{seatId}
+            </if>
+            <if test="price != null and price != ''">
+                and price = #{price}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+
+        </where>
+    </select>
+
+</mapper>

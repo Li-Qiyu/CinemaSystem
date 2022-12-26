@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="application/entity/Screen">
+
+    <insert id="addScreen" parameterType="application.entity.persistent.PersistentScreen">
+        insert into screen
+            set capacity = #{capacity}
+    </insert>
+
+    <delete id="deleteScreen" parameterType="java.lang.Integer">
+        delete from screen where screen_id = #{screenIdParam}
+    </delete>
+
+    <update id="updateScreen" parameterType="application.entity.persistent.PersistentScreen">
+        update screen
+        <set>
+            <if test="screenId != null and screenId != ''">
+                screen_id = #{screenId},
+            </if>
+            <if test="capacity != null and capacity != ''">
+                capacity = #{capacity},
+            </if>
+        </set>
+        where screen_id = #{screenId}
+    </update>
+
+    <select id="getScreens" parameterType="java.util.Map" resultType="application.entity.persistent.PersistentScreen">
+        select screen_id as screenId,
+               capacity as capacity
+        from screen
+        <where>
+            <if test="screenId != null and screenId != ''">
+                screen_id = #{screenId}
+            </if>
+            <if test="capacity != null and capacity != ''">
+                and capacity = #{capacity}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="getAllScreens" resultType="application.entity.persistent.PersistentScreen">
+        select * from screen
+    </select>
+
+</mapper>

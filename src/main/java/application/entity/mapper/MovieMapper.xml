@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="application/entity/Movie">
+
+    <insert id="addMovie" parameterType="application.entity.persistent.PersistentMovie">
+        insert into movie
+            set title = #{title},
+                running_time = #{runningTime},
+                year = #{year}
+    </insert>
+
+    <delete id="deleteMovie" parameterType="java.lang.String">
+        delete from movie where title = #{titleParam}
+    </delete>
+
+    <update id="updateMovie" parameterType="application.entity.persistent.PersistentMovie">
+        update movie
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="runningTime != null and runningTime != ''">
+                running_time = #{runningTime},
+            </if>
+            <if test="year != null and year != ''">
+                year = #{year},
+            </if>
+        </set>
+        where title = #{title}
+    </update>
+
+    <select id="getMovies" parameterType="java.util.Map" resultType="application.entity.persistent.PersistentMovie">
+        select title as title,
+               running_time as runningTime,
+               year as year
+               id as id
+        from movie
+        <where>
+            <if test="title != null and title != ''">
+                title = #{title}
+            </if>
+            <if test="runningTime != null and runningTime != ''">
+                and running_time = #{runningTime}
+            </if>
+            <if test="year != null and year != ''">
+                and year = #{year}
+            </if>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="getRowNum" resultType="int">
+        select count(*) from movie
+    </select>
+
+    <select id="getAllMovies" resultType="application.entity.persistent.PersistentMovie">
+        select * from movie
+    </select>
+
+</mapper>
